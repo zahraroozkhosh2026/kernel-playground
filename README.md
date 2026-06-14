@@ -56,3 +56,36 @@ This repository is designed to facilitate customizing the Linux kernel, building
 ---
 
 *For further assistance or questions, refer to the individual README files within each folder.*
+
+---
+
+## E15 — ARP Spoofing Detector (Student Project)
+
+**Student:** zahraroozkhosh2026  
+**Course:** Software Networks 2025-2026  
+**Project:** E15 — ARP Spoofing Detector (eBPF/XDP)
+
+### Description
+An eBPF/XDP program that detects ARP packets and logs the sender MAC address and IP address using bpf_printk.
+
+### Files
+- `arp_spoof.c` — eBPF program that hooks at XDP and parses ARP packets
+
+### How to Compile
+```bash
+clang -O2 -g -target bpf -c arp_spoof.c -o arp_spoof.o
+```
+
+### How to Run
+```bash
+sudo ip link set dev ens33 xdp obj arp_spoof.o sec xdp
+sudo cat /sys/kernel/debug/tracing/trace_pipe
+```
+
+### How to Test
+```bash
+sudo arping -I ens33 -c 3 <target_ip>
+```
+
+### Results
+ARP packets are detected and logged showing sender MAC and IP address.
